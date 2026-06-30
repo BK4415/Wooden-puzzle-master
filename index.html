@@ -2,93 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Wooden Puzzle Master</title>
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- PWA & Mobile Meta -->
+    <meta name="theme-color" content="#1a120b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2c1e14">
-</head>
-<body class="loading">
+    <link rel="apple-touch-icon" href="assets/logo.png">
 
-    <!-- Loader Screen -->
-    <div id="loader" class="screen">
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
+</head>
+<body class="loading-active">
+
+    <!-- 1. LOADER SCREEN -->
+    <div id="loader" class="screen loader-screen">
         <div class="loader-content">
-            <img src="assets/logo.png" alt="Logo" class="main-logo">
-            <h1>Wooden Puzzle Master</h1>
-            <div class="progress-bar"><div class="progress"></div></div>
+            <div class="logo-wrapper">
+                <img src="assets/logo.png" alt="Wooden Puzzle Master Logo" class="main-logo animate-pulse">
+            </div>
+            <h1 class="game-title-text">Wooden Puzzle Master</h1>
+            <div class="loader-bar-container">
+                <div class="loader-progress"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Main Home Screen -->
+    <!-- 2. HOME SCREEN -->
     <main id="home-screen" class="screen hidden">
+        <!-- Top Bar -->
         <header class="top-bar">
-            <button id="btn-info" class="icon-btn">i</button>
+            <button id="btn-info" class="icon-btn ripple" aria-label="Information">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/></svg>
+            </button>
             <div class="brand">
-                <img src="assets/logo.png" alt="Logo" class="small-logo">
-                <span>Puzzle Master</span>
+                <img src="assets/logo.png" alt="Small Logo" class="nav-logo">
+                <span class="brand-name">Puzzle Master</span>
             </div>
-            <button id="btn-stats" class="icon-btn">🏆</button>
+            <button id="btn-stats" class="icon-btn ripple" aria-label="Dashboard">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z"/></svg>
+            </button>
         </header>
 
-        <section class="settings-card">
-            <div class="setting-group">
-                <label>Game Type</label>
-                <div class="selector">
-                    <button class="prev">&lt;</button>
-                    <span id="display-type">Number</span>
-                    <button class="next">&gt;</button>
+        <!-- Center Settings Card -->
+        <section class="settings-container">
+            <div class="settings-card">
+                <!-- Type Selector -->
+                <div class="setting-row">
+                    <label>Game Type</label>
+                    <div class="selector-group">
+                        <button class="selector-arrow" id="type-prev">❮</button>
+                        <span id="current-type" class="selector-value">Number</span>
+                        <button class="selector-arrow" id="type-next">❯</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="setting-group">
-                <label>Board Size</label>
-                <div class="size-grid">
-                    <button class="size-opt active" data-size="3">3×3</button>
-                    <button class="size-opt" data-size="4">4×4</button>
-                    <button class="size-opt" data-size="5">5×5</button>
-                    <button class="size-opt" data-size="6">6×6</button>
-                    <button class="size-opt" data-size="7">7×7</button>
+                <!-- Board Size Selector -->
+                <div class="setting-row">
+                    <label>Board Size</label>
+                    <div class="size-chips">
+                        <button class="size-chip active" data-size="3">3×3</button>
+                        <button class="size-chip" data-size="4">4×4</button>
+                        <button class="size-chip" data-size="5">5×5</button>
+                        <button class="size-chip" data-size="6">6×6</button>
+                        <button class="size-chip" data-size="7">7×7</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Live Preview -->
-            <div id="live-preview" class="preview-container">
-                <div id="preview-board" class="wooden-board"></div>
-            </div>
-
-            <div class="setting-group" id="mode-selector-container">
-                <label>Pattern Mode</label>
-                <div class="selector">
-                    <button class="prev-mode">&lt;</button>
-                    <span id="display-mode">Classic</span>
-                    <button class="next-mode">&gt;</button>
+                <!-- Live Preview -->
+                <div class="preview-area">
+                    <div id="live-preview-board" class="wooden-board preview-mode">
+                        <!-- Tiles generated by UI.js -->
+                    </div>
                 </div>
-            </div>
 
-            <div id="photo-upload-section" class="hidden">
-                <input type="file" id="photo-input" accept="image/*" hidden>
-                <button id="btn-upload" class="premium-btn secondary">📷 Upload Image</button>
+                <!-- Mode/Preset Selector -->
+                <div class="setting-row">
+                    <label id="mode-label">Pattern Mode</label>
+                    <div class="selector-group">
+                        <button class="selector-arrow" id="mode-prev">❮</button>
+                        <span id="current-mode" class="selector-value">Classic</span>
+                        <button class="selector-arrow" id="mode-next">❯</button>
+                    </div>
+                </div>
+
+                <!-- Conditional Upload Section (Hidden by default) -->
+                <div id="upload-section" class="upload-container hidden">
+                    <input type="file" id="photo-input" accept="image/*" hidden>
+                    <button class="upload-btn" onclick="document.getElementById('photo-input').click()">
+                        <svg viewBox="0 0 24 24" width="20" height="20" style="margin-right: 8px;"><path fill="currentColor" d="M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z"/></svg>
+                        Upload Custom Photo
+                    </button>
+                </div>
             </div>
         </section>
 
-        <footer class="home-footer">
-            <button id="btn-resume" class="premium-btn hidden">
-                <span class="btn-label">Resume Game</span>
-                <span id="resume-info" class="btn-subtext">Classic • 4×4</span>
+        <!-- Bottom Action Buttons -->
+        <footer class="home-actions">
+            <button id="btn-resume" class="premium-btn resume-btn hidden">
+                <div class="btn-content">
+                    <span class="main-text">Resume Game</span>
+                    <span id="resume-details" class="sub-text">Classic • 4×4</span>
+                </div>
             </button>
-            <button id="btn-start" class="premium-btn">New Game</button>
+            <button id="btn-start" class="premium-btn primary-btn">
+                <span class="main-text">Start New Game</span>
+            </button>
         </footer>
     </main>
 
-    <!-- Game Screen -->
-    <div id="game-screen" class="screen hidden">
-        <!-- Structure as requested in prompt -->
-    </div>
+    <!-- 3. DRAWERS & OVERLAYS -->
+    <div id="global-overlay" class="overlay-dim hidden"></div>
 
-    <!-- Drawers (Info and Stats) -->
-    <div id="drawer-overlay"></div>
-    <aside id="info-drawer" class="drawer left">
-        <!-- Content -->
+    <!-- Left Drawer: Information -->
+    <aside id="drawer-info" class="drawer drawer-left">
+        <div class="drawer-header">
+            <h2>Game Information</h2>
+            <button class="close-drawer">✕</button>
+        </div>
+        <div class="drawer-content">
+            <section>
+                <h3>How To Play</h3>
+                <p>Slide wooden tiles into the empty slot to arrange them in the correct sequence or complete the picture. You can slide multiple tiles at once!</p>
+            </section>
+            <nav class="drawer-nav">
+                <a href="about.html" class="nav-item">About Game</a>
+                <a href="privacy-policy.html" class="nav-item">Privacy Policy</a>
+                <a href="terms.html" class="nav-item">Terms of Service</a>
+            </nav>
+            <div class="version-info">Version 1.0.0 • Developed with Premium Quality</div>
+        </div>
+    </aside>
+
+    <!-- Right Drawer: Dashboard -->
+    <aside id="drawer-stats" class="drawer drawer-right">
+        <div class="drawer-header">
+            <h2>Dashboard</h2>
+            <button class="close-drawer">✕</button>
+        </div>
+        <div class="drawer-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label">Total Wins</span>
+                    <span id="stat-total-wins" class="stat-val">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Best Time</span>
+                    <span id="stat-best-time" class="stat-val">--:--</span>
+                </div>
+            </div>
+            
+            <h3>Achievements</h3>
+            <div id="achievements-container" class="badge-grid">
+                <!-- Badges like 'First Win', 'Master of 7x7' injected here -->
+                <div class="badge-locked">🏆</div>
+                <div class="badge-locked">⭐</div>
+                <div class="badge-locked">🧩</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Core Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/puzzle.js"></script>
+    <script src="js/swipe.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+                                                          </html>        <!-- Content -->
     </aside>
     <aside id="stats-drawer" class="drawer right">
         <!-- Content -->
