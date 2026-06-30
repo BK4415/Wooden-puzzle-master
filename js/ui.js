@@ -69,3 +69,22 @@ const UI = {
         return 2;
     }
 };
+// Add this inside your move handling logic
+function showFeedback(text, x, y) {
+    const feedback = document.createElement('div');
+    feedback.className = 'feedback-text';
+    feedback.textContent = text;
+    feedback.style.left = `${x}px`;
+    feedback.style.top = `${y}px`;
+    
+    document.getElementById('puzzle-container').appendChild(feedback);
+    
+    setTimeout(() => feedback.remove(), 800);
+}
+
+// Example usage when a move is successful
+const words = ["WOW!", "NICE!", "COOL!", "GREAT!"];
+if (moveSuccessful) {
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+    showFeedback(randomWord, tileX, tileY);
+}
