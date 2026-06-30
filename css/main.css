@@ -1,0 +1,79 @@
+:root {
+    --primary-bg: #8d5524;
+    --card-bg: #f3e5ab; /* Light paper/wood color */
+    --accent-green: #4caf50;
+    --accent-blue: #2196f3;
+    --accent-red: #f44336;
+    --text-brown: #5d4037;
+    --gold: #ffc107;
+    --font-main: 'Arial Black', Gadget, sans-serif;
+}
+
+body {
+    background: radial-gradient(circle, #bc8f8f 0%, #8b4513 100%);
+    color: var(--text-brown);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+}
+
+/* 3D Cartoon Text Header */
+.game-title-text {
+    font-size: 3rem;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 
+        0 2px 0 #ccc, 0 4px 0 #c5c5c5, 
+        0 6px 0 #bbb, 0 8px 0 #b9b9b9, 
+        0 10px 10px rgba(0,0,0,.4);
+    line-height: 1;
+    margin: 20px 0;
+}
+
+/* Vines/Leaves Decoration (Top) */
+.screen::before {
+    content: "🌿🍃";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    font-size: 40px;
+    text-align: center;
+    z-index: 10;
+    letter-spacing: 20px;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+}
+
+/* Premium Card Style (The Light Wood/Paper look) */
+.settings-card {
+    background: var(--card-bg);
+    border: 8px solid #5d4037;
+    border-radius: 30px;
+    box-shadow: 0 10px 0 #3d2b1f;
+    padding: 20px;
+    margin: 15px;
+    position: relative;
+}
+
+/* Rounded Colorful Buttons */
+.premium-btn {
+    background: linear-gradient(to bottom, #8bc34a, #4caf50);
+    border: none;
+    border-bottom: 6px solid #2e7d32;
+    border-radius: 50px;
+    color: white;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    transition: all 0.1s;
+}
+
+.premium-btn:active {
+    border-bottom-width: 2px;
+    transform: translateY(4px);
+}
+
+.premium-btn.secondary {
+    background: linear-gradient(to bottom, #03a9f4, #0288d1);
+    border-bottom-color: #01579b;
+}
