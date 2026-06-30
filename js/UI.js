@@ -1,39 +1,71 @@
 const UI = {
-    currentSize: 4,
-    currentType: 'Number',
-    currentMode: 'Classic',
+    // ... previous code ...
 
-    init() {
-        this.bindEvents();
-        this.updatePreview();
-    },
-
-    bindEvents() {
-        document.querySelectorAll('.size-opt').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelector('.size-opt.active').classList.remove('active');
-                e.target.classList.add('active');
-                this.currentSize = parseInt(e.target.dataset.size);
-                this.updatePreview();
-            });
+    initGame() {
+        // This runs on game.html
+        this.engine = new PuzzleEngine(
+            parseInt(localStorage.getItem('wpm_size') || 4),
+            localStorage.getItem('wpm_mode') || 'classic'
+        );
+        
+        const saved = Storage.getSavedGame();
+        this.engine.init(saved);
+        this.renderBoard();
+        this.startTimer();
+        
+        new SwipeHandler(document.getElementById('puzzle-container'), (dir) => {
+            this.handleInput(dir);
         });
     },
 
-    updatePreview() {
-        const container = document.getElementById('preview-board');
-        container.style.gridTemplateColumns = `repeat(${this.currentSize}, 1fr)`;
-        container.innerHTML = '';
+    handlePhotoUpload(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                // Process and slice image using Canvas
+                this.processImage(img);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    },
+
+    processImage(img) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const size = Math.min(img.width, img.height);
         
-        for (let i = 0; i < this.currentSize * this.currentSize; i++) {
-            const tile = document.createElement('div');
-            tile.className = 'tile preview-tile';
-            if (this.currentType === 'Number') {
-                tile.textContent = (i + 1 === this.currentSize**2) ? '' : i + 1;
-                if (!tile.textContent) tile.classList.add('empty');
-            }
-            container.appendChild(tile);
-        }
+        canvas.width = 600; // Standardize high-res
+        canvas.height = 600;
+        
+        // Center Crop
+        ctx.drawImage(img, (img.width-size)/2, (img.height-size)/2, size, size, 0, 0, 600, 600);
+        
+        const processedImageData = canvas.toDataURL('image/jpeg', 0.8);
+        localStorage.setItem('wpm_custom_photo', processedImageData);
+        this.updatePreview();
+    },
+
+    showVictory(moves, seconds) {
+        document.getElementById('final-moves').textContent = moves;
+        document.getElementById('final-time').textContent = this.formatTime(seconds);
+        
+        // Star Rating Logic based on efficiency
+        const stars = this.calculateStars(moves, seconds);
+        document.getElementById('star-rating').textContent = '⭐'.repeat(stars);
+        
+        const overlay = document.getElementById('victory-overlay');
+        overlay.classList.remove('hidden');
+        overlay.classList.add('show');
+    },
+
+    calculateStars(moves, time) {
+        const size = this.engine.size;
+        const minMoves = size * size * 5; // Rough baseline
+        if (moves < minMoves) return 5;
+        if (moves < minMoves * 1.5) return 4;
+        if (moves < minMoves * 2) return 3;
+        return 2;
     }
 };
-
-UI.init();
