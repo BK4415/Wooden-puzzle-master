@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wooden Puzzle Master</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c1e14">
+</head>
+<body class="loading">
+
+    <!-- Loader Screen -->
+    <div id="loader" class="screen">
+        <div class="loader-content">
+            <img src="assets/logo.png" alt="Logo" class="main-logo">
+            <h1>Wooden Puzzle Master</h1>
+            <div class="progress-bar"><div class="progress"></div></div>
+        </div>
+    </div>
+
+    <!-- Main Home Screen -->
+    <main id="home-screen" class="screen hidden">
+        <header class="top-bar">
+            <button id="btn-info" class="icon-btn">i</button>
+            <div class="brand">
+                <img src="assets/logo.png" alt="Logo" class="small-logo">
+                <span>Puzzle Master</span>
+            </div>
+            <button id="btn-stats" class="icon-btn">🏆</button>
+        </header>
+
+        <section class="settings-card">
+            <div class="setting-group">
+                <label>Game Type</label>
+                <div class="selector">
+                    <button class="prev">&lt;</button>
+                    <span id="display-type">Number</span>
+                    <button class="next">&gt;</button>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Board Size</label>
+                <div class="size-grid">
+                    <button class="size-opt active" data-size="3">3×3</button>
+                    <button class="size-opt" data-size="4">4×4</button>
+                    <button class="size-opt" data-size="5">5×5</button>
+                    <button class="size-opt" data-size="6">6×6</button>
+                    <button class="size-opt" data-size="7">7×7</button>
+                </div>
+            </div>
+
+            <!-- Live Preview -->
+            <div id="live-preview" class="preview-container">
+                <div id="preview-board" class="wooden-board"></div>
+            </div>
+
+            <div class="setting-group" id="mode-selector-container">
+                <label>Pattern Mode</label>
+                <div class="selector">
+                    <button class="prev-mode">&lt;</button>
+                    <span id="display-mode">Classic</span>
+                    <button class="next-mode">&gt;</button>
+                </div>
+            </div>
+
+            <div id="photo-upload-section" class="hidden">
+                <input type="file" id="photo-input" accept="image/*" hidden>
+                <button id="btn-upload" class="premium-btn secondary">📷 Upload Image</button>
+            </div>
+        </section>
+
+        <footer class="home-footer">
+            <button id="btn-resume" class="premium-btn hidden">
+                <span class="btn-label">Resume Game</span>
+                <span id="resume-info" class="btn-subtext">Classic • 4×4</span>
+            </button>
+            <button id="btn-start" class="premium-btn">New Game</button>
+        </footer>
+    </main>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <!-- Structure as requested in prompt -->
+    </div>
+
+    <!-- Drawers (Info and Stats) -->
+    <div id="drawer-overlay"></div>
+    <aside id="info-drawer" class="drawer left">
+        <!-- Content -->
+    </aside>
+    <aside id="stats-drawer" class="drawer right">
+        <!-- Content -->
+    </aside>
+
+    <script src="js/storage.js"></script>
+    <script src="js/puzzle.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
